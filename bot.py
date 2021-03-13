@@ -33,7 +33,7 @@ async def on_message(message):
 
     num_pics = api.count_pics(tweet_ids)
 
-    if num_pics == 0:
+    if num_pics < 2:
         return
 
     reactions = get_emojis(num_pics)

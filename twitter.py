@@ -3,8 +3,6 @@ import requests
 
 class Twitter:
     def __init__(self):
-        self.KEY = os.environ['TWITTER_API_KEY']
-        self.SECRET = os.environ['TWITTER_API_SECRET']
         self.BEARER = os.environ['TWITTER_API_BEARER']
 
     def request(self, tweet_ids):

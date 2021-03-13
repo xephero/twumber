@@ -5,7 +5,7 @@ description = "Discord bot that reacts to a twitter link with a number of images
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "3.8.5"
 "discord.py" = "^1.6.0"
 requests = "^2.25.1"
 

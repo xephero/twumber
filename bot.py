@@ -11,7 +11,7 @@ import os
 
 client = discord.Client()
 
-tweet_id_pattern = re.compile(r"https?://(?:www\.)?(?:mobile\.)?twitter\.com/[^ ]+/status/(\d+)")
+tweet_id_pattern = re.compile(r"https?://(?:www\.)?(?:mobile\.)?twitter\.com/[^\b\n\s]+/status/(\d+)")
 api = Twitter()
 
 def get_emoji(digit):

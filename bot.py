@@ -18,6 +18,9 @@ def get_emoji(digit):
     return str(digit) + u'\ufe0f\u20e3'
 
 def get_emojis(number):
+    if number >= 10:
+        return ['\U0001f51f', '\u2795']
+
     return list(map(get_emoji, str(number)))
 
 @client.event

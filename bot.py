@@ -34,15 +34,18 @@ async def on_message(message):
     if len(tweet_ids) == 0:
         return
 
-    num_pics = api.count_pics(tweet_ids)
+    tweet_data = api.get_tweet_data(tweet_ids)
 
-    if num_pics < 2:
-        return
+    num_pics = api.count_pics(tweet_data)
 
-    reactions = get_emojis(num_pics)
+    if num_pics > 1:
+        reactions = get_emojis(num_pics)
 
-    for reaction in reactions:
-        print(f"Adding reaction {reaction}")
-        await message.add_reaction(reaction)
+        for reaction in reactions:
+            print(f"Adding reaction {reaction}")
+            await message.add_reaction(reaction)
+
+    if api.is_video(tweet_data):
+        await message.add_reaction('\U0001f3a5')
 
 client.run(os.environ['DISCORD_TOKEN'])

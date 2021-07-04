@@ -10,10 +10,18 @@ class Twitter:
         url = f"https://api.twitter.com/2/tweets?ids={','.join(tweet_ids)}&media.fields=type&expansions=attachments.media_keys"
         return requests.get(url, headers=headers).json()
 
-    def count_pics(self, tweet_ids):
-        response = self.request(tweet_ids)
+    def get_tweet_data(self, tweet_ids):
+        return self.request(tweet_ids)
 
-        if 'includes' not in response:
+    def count_pics(self, tweet_data):
+        if 'includes' not in tweet_data:
             return 0
 
-        return len(response['includes']['media'])
+        return len(tweet_data['includes']['media'])
+
+    def is_video(self, tweet_data):
+        for media in tweet_data['includes']['media']:
+            if media['type'] == 'video':
+                return True;
+
+        return False;

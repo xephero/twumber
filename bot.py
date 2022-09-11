@@ -9,8 +9,6 @@ import discord
 import re
 import os
 
-client = discord.Client()
-
 tweet_id_pattern = re.compile(r"https?://(?:www\.)?(?:mobile\.)?twitter\.com/[^\b\n\s]+/status/(\d+)")
 api = Twitter()
 
@@ -23,29 +21,31 @@ def get_emojis(number):
 
     return list(map(get_emoji, str(number)))
 
-@client.event
-async def on_ready():
-    print(f"Logged in as {client.user}")
+class Twumber(discord.Client):
+    async def on_ready(self):
+        print(f"Logged in as {client.user}")
 
-@client.event
-async def on_message(message):
-    tweet_ids = tweet_id_pattern.findall(message.content)
+    async def on_message(self, message):
+        tweet_ids = tweet_id_pattern.findall(message.content)
 
-    if len(tweet_ids) == 0:
-        return
+        if len(tweet_ids) == 0:
+            return
 
-    tweet_data = api.get_tweet_data(tweet_ids)
+        tweet_data = api.get_tweet_data(tweet_ids)
 
-    num_pics = api.count_pics(tweet_data)
+        num_pics = api.count_pics(tweet_data)
 
-    if num_pics > 1:
-        reactions = get_emojis(num_pics)
+        if num_pics > 1:
+            reactions = get_emojis(num_pics)
 
-        for reaction in reactions:
-            print(f"Adding reaction {reaction}")
-            await message.add_reaction(reaction)
+            for reaction in reactions:
+                print(f"Adding reaction {reaction}")
+                await message.add_reaction(reaction)
 
-    if api.is_video(tweet_data):
-        await message.add_reaction('\U0001f3a5')
+        if api.is_video(tweet_data):
+            await message.add_reaction('\U0001f3a5')
 
+intents = discord.Intents.default()
+intents.message_content = True
+client = Twumber(intents=intents)
 client.run(os.environ['DISCORD_TOKEN'])
